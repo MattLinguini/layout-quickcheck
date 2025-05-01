@@ -1,5 +1,6 @@
 INCLUDE_VALUE_IN_NAME = ["display"]
 
+from lqc.config.config import Config
 
 class StyleMap():
     map = {}
@@ -60,7 +61,9 @@ class StyleMap():
                 ret_string += 'if (' + elementId + ') {\n'
 
                 for (style_name, style_value) in elementStyles:
-                    ret_string += f'  {elementId}.style["{style_name}"] = "{style_value}";\n'
+                    # Skip properties that are configured to be excluded from being changed in style changes
+                    if not Config().isPropertyExcluded(style_name):
+                        ret_string += f'  {elementId}.style["{style_name}"] = "{style_value}";\n'
                 
                 ret_string += '}\n'
 

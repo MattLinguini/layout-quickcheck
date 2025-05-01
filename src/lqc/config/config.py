@@ -27,6 +27,7 @@ class Config:
             # Class Initialization Code
             cls.__instance.style_weights = config.get("style-weights", {})
             cls.__instance.variants = config.get("variants", [])
+            cls.__instance.excluded_from_changes = config.get("excluded-from-changes", [])
             paths = config.get("paths", {})
             cls.__instance.path_bug_reports_dir = paths.get("bug-reports-directory", "./bug_reports")
             cls.__instance.path_tmp_files_dir = paths.get("tmp-files-directory", "./tmp_generated_files")
@@ -55,4 +56,8 @@ class Config:
 
     def getTmpFilesDirectory(self):
         return self.path_tmp_files_dir
+    
+    def isPropertyExcluded(self, property_name):
+        """Check if a CSS property should be excluded from being changed in style changes"""
+        return property_name in self.excluded_from_changes
     
